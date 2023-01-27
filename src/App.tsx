@@ -3,11 +3,14 @@ import { CustomerList } from "./CustomerList";
 import { CustomerForm } from "./CustomerForm";
 import { EditModal } from "./EditModal";
 import { Customer, CustomerForm as ICustomerForm } from "./types";
+import { Typography } from "antd";
 
 const App = () => {
   const [customers, setCustomers] = useState<Customer[]>([]);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [editCustomerId, setEditCustomerId] = useState<number | null>(null);
+
+  const { Title } = Typography;
 
   const addCustomer = (form: ICustomerForm) => {
     const newCustomer = {
@@ -54,24 +57,29 @@ const App = () => {
 
   return (
     <div>
-      <h1>Список покупателей</h1>
+      <Title>Список покупателей</Title>
       <CustomerList
         customers={customers}
         deleteCallback={(id) => deleteCustomer(id)}
         editCallback={(id) => {
-          setModalOpen(true);
+          setModalIsOpen(true);
           setEditCustomerId(id);
         }}
       />
       <CustomerForm submitCallback={(form) => addCustomer(form)} />
-      {modalOpen && (
+      {modalIsOpen && (
         <EditModal
+          modalIsOpen={modalIsOpen}
+          editCustomer={customers.find((el) => el.id === editCustomerId)}
           submitCallback={(form) => {
             editCustomer(form);
-            setModalOpen(false);
+            setModalIsOpen(false);
             setEditCustomerId(null);
           }}
-          editCustomer={customers.find((el) => el.id === editCustomerId)}
+          cancelCallback={() => {
+            setModalIsOpen(false);
+            setEditCustomerId(null);
+          }}
         />
       )}
     </div>

@@ -1,13 +1,15 @@
 import { CustomerForm } from "./CustomerForm";
 import { Customer, CustomerForm as ICustomerForm } from "./types";
+import { Modal } from 'antd'
 
 export const EditModal = (props: {
-  submitCallback: (form: ICustomerForm) => void;
+  modalIsOpen: boolean;
   editCustomer?: Customer;
+  submitCallback: (form: ICustomerForm) => void;
+  cancelCallback: () => void
 }) => {
   return (
-    <>
-      <div>Модалка</div>
+    <Modal title="Редактировать покупателя" open={props.modalIsOpen} onCancel={props.cancelCallback} footer={null}>
       {props.editCustomer && (
         <CustomerForm
           submitCallback={props.submitCallback}
@@ -18,6 +20,6 @@ export const EditModal = (props: {
           }}
         />
       )}
-    </>
+    </Modal>
   );
 };
