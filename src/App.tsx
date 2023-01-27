@@ -14,7 +14,7 @@ const App = () => {
 
   const addCustomer = (form: ICustomerForm) => {
     const newCustomer = {
-      id: customers.length + 1,
+      id: customers.length ? customers[customers.length - 1].id + 1 : 0,
       name: form.name,
       email: form.email,
     };
