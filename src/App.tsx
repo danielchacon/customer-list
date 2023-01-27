@@ -3,7 +3,7 @@ import { CustomerList } from "./CustomerList";
 import { CustomerForm } from "./CustomerForm";
 import { EditModal } from "./EditModal";
 import { Customer, CustomerForm as ICustomerForm } from "./types";
-import { Typography } from "antd";
+import { Typography, Layout } from "antd";
 
 const App = () => {
   const [customers, setCustomers] = useState<Customer[]>([]);
@@ -11,6 +11,7 @@ const App = () => {
   const [editCustomerId, setEditCustomerId] = useState<number | null>(null);
 
   const { Title } = Typography;
+  const { Content } = Layout;
 
   const addCustomer = (form: ICustomerForm) => {
     const newCustomer = {
@@ -56,33 +57,36 @@ const App = () => {
   }, []);
 
   return (
-    <div>
-      <Title>Список покупателей</Title>
-      <CustomerList
-        customers={customers}
-        deleteCallback={(id) => deleteCustomer(id)}
-        editCallback={(id) => {
-          setModalIsOpen(true);
-          setEditCustomerId(id);
-        }}
-      />
-      <CustomerForm submitCallback={(form) => addCustomer(form)} />
-      {modalIsOpen && (
-        <EditModal
-          modalIsOpen={modalIsOpen}
-          editCustomer={customers.find((el) => el.id === editCustomerId)}
-          submitCallback={(form) => {
-            editCustomer(form);
-            setModalIsOpen(false);
-            setEditCustomerId(null);
-          }}
-          cancelCallback={() => {
-            setModalIsOpen(false);
-            setEditCustomerId(null);
+    <Layout>
+      <Content style={{ padding: '24px' }}>
+        <Title>Список покупателей</Title>
+        <CustomerList
+          customers={customers}
+          deleteCallback={(id) => deleteCustomer(id)}
+          editCallback={(id) => {
+            setModalIsOpen(true);
+            setEditCustomerId(id);
           }}
         />
-      )}
-    </div>
+        <Title level={2}>Добавить покупателя </Title>
+        <CustomerForm submitCallback={(form) => addCustomer(form)} />
+        {modalIsOpen && (
+          <EditModal
+            modalIsOpen={modalIsOpen}
+            editCustomer={customers.find((el) => el.id === editCustomerId)}
+            submitCallback={(form) => {
+              editCustomer(form);
+              setModalIsOpen(false);
+              setEditCustomerId(null);
+            }}
+            cancelCallback={() => {
+              setModalIsOpen(false);
+              setEditCustomerId(null);
+            }}
+          />
+        )}
+      </Content>
+    </Layout>
   );
 };
 
