@@ -14,11 +14,15 @@ export const CustomerForm = (props: {
     email: string;
   };
 }) => {
+  const [form] = Form.useForm();
+
   return (
     <Form
+      form={form}
       initialValues={props.initialValues}
       onFinish={(values: any) => {
         props.submitCallback(values);
+        form.resetFields();
       }}
     >
       <Form.Item
