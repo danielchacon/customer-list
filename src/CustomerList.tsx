@@ -1,5 +1,6 @@
 import { Customer } from "./types";
 import { Table, Space, Button } from "antd";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
 export const CustomerList = (props: {
   customers: Customer[];
@@ -38,17 +39,17 @@ export const CustomerList = (props: {
               type="primary"
               onClick={() => props.editCallback(record.id)}
             >
-              Редактировать
+              <EditOutlined />
             </Button>
             <Button onClick={() => props.deleteCallback(record.id)}>
-              Удалить
+              <DeleteOutlined />
             </Button>
           </Space>
         );
       },
-      width: 1
+      width: 1,
     },
   ];
 
-  return <Table dataSource={dataSource()} columns={columns} />;
+  return <Table dataSource={dataSource()} columns={columns} scroll={{x: true}}/>;
 };
